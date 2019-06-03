@@ -1,3 +1,6 @@
+# Code based on https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
+# Modified from 2 dimensional data to show features from multidimentsional data (breast cancer)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
