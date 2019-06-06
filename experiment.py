@@ -37,6 +37,9 @@ classifiers = [
     GaussianNB(),
     QuadraticDiscriminantAnalysis()]
 
+clf_full = None
+score_full = None
+
 X, y = make_classification(n_features=2, n_redundant=0, n_informative=2,
                            random_state=1, n_clusters_per_class=1)
 rng = np.random.RandomState(2)
@@ -77,13 +80,13 @@ for ft_cnt, feature in enumerate(plot_features):
 	    train_test_split(X, y, test_size=.4, random_state=42)
 
 	feature1, = np.where(ds.feature_names == feature[0])
-	print feature
 	feature1 = feature1[0]	
 	feature2, = np.where(ds.feature_names == feature[1])
 	feature2 = feature2[0]	
 
-	print "\nChoosed features: ", feature
-
+	print "----------------------------------------"
+	print "\nPlots row ", ft_cnt, ". Choosed features: ", feature
+	
 	X_train_plot = np.stack((X_train[:,feature1],X_train[:,feature2]), axis=-1)
 	X_test_plot = np.stack((X_test[:,feature1],X_test[:,feature2]), axis=-1)
 
@@ -98,7 +101,6 @@ for ft_cnt, feature in enumerate(plot_features):
 	xx = np.swapaxes(xx,0,1)
 	yy = np.swapaxes(yy,0,1)
 	
-	print xx.shape, yy.shape, X_train.shape, X_test.shape
 
 	# just plot the dataset first
 	cm = plt.cm.RdBu
@@ -121,14 +123,19 @@ for ft_cnt, feature in enumerate(plot_features):
 	ax.set_yticks(())
 	i += 1
 
+	if ft_cnt == len(plot_features) - 1:
+		print "----------------------------------------"
+		print "\nAccuracy evaluated on full dataset: \n"
 	# iterate over classifiers
 	for name, clf in zip(names, classifiers):
+		
 		ax = plt.subplot(len(plot_features), len(classifiers) + 1, i)
+	
+		# Based on 2 features from dataset predicion and accuracy count
 		clf.fit(X_train_plot, y_train_plot)
 		score = clf.score(X_test_plot, y_test_plot)
-		
-		#clf.fit(X_train_plot, y_train_plot)
-		#score = clf.score(X_test_plot, y_test_plot)
+			
+
 
 		# Plot the decision boundary. For that, we will assign a color to each
 		# point in the mesh [x_min, x_max]x[y_min, y_max].
@@ -161,8 +168,16 @@ for ft_cnt, feature in enumerate(plot_features):
 		        size=15, horizontalalignment='right')
 		i += 1
 
-print title
+		# Preditcion based on complete dataset		
+		if ft_cnt == len(plot_features) - 1:
+			clf_full = clf
+			clf_full.fit(X_train, y_train)
+			score_full = clf_full.score(X_test, y_test)
+			print name, " classifier accuraccy: %.2f " % score_full
 
+
+print "----------------------------------------"
+print "Plotting classifiers results based on partial dataset"
 figure.canvas.set_window_title(title)	
 plt.tight_layout()
 plt.show()
