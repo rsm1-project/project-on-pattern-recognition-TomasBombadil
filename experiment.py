@@ -173,7 +173,7 @@ for ft_cnt, feature in enumerate(plot_features):
 			clf_full = clf
 			clf_full.fit(X_train, y_train)
 			score_full = clf_full.score(X_test, y_test)
-			print name, " classifier accuraccy: %.2f " % score_full
+			print name, " classifier accuraccy: %.4f " % score_full
 
 
 print "----------------------------------------"
