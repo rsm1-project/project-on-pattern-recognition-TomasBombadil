@@ -27,15 +27,15 @@ names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
 
 classifiers = [
     KNeighborsClassifier(3),
-    SVC(kernel="linear", C=0.025),
+    SVC(kernel="linear", C=0.025, degree=3),
     SVC(gamma=2, C=1),
-    GaussianProcessClassifier(1.0 * RBF(1.0)),
+    GaussianProcessClassifier(1.0 * RBF(1.0), n_restarts_optimizer=0),
     DecisionTreeClassifier(max_depth=5),
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     MLPClassifier(alpha=1, max_iter=1000),
-    AdaBoostClassifier(),
-    GaussianNB(),
-    QuadraticDiscriminantAnalysis()]
+    AdaBoostClassifier(n_estimators=50, learning_rate=1.0),
+    GaussianNB(var_smoothing=1e-09),
+    QuadraticDiscriminantAnalysis(reg_param=0.0, tol=0.0001)]
 
 clf_full = None
 score_full = None
